@@ -20,7 +20,7 @@ const PORT = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
-// Initialize express
+// Initialie express
 const app: Express = express();
 
 // Enhance API security
