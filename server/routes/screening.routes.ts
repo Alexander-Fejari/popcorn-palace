@@ -6,13 +6,10 @@ import auth from '../middlewares/verifyAuth'
 
 const router = express.Router();
 
-router.post("/add",
-  [
-    auth.verifyToken, 
-    auth.isAdmin, 
-    verifyScreening.checkDate 
-  ],
-  controller.addScreening
+router.post(
+    '/add',
+    [auth.verifyToken, auth.isAdmin, verifyScreening.checkDate],
+    controller.addScreening
 );
 
 router.get("/",
