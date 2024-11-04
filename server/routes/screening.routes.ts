@@ -7,11 +7,11 @@ import auth from '../middlewares/verifyAuth'
 const router = express.Router();
 
 router.post("/add",
-  [
-    auth.verifyToken, 
-    auth.isAdmin, 
-    verifyScreening.checkDate 
-  ],
+  // [
+  //   auth.verifyToken, 
+  //   auth.isAdmin, 
+  //   verifyScreening.checkDate 
+  // ],
   controller.addScreening
 );
 

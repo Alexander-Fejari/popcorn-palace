@@ -61,7 +61,6 @@ async function getAllScreenings(req: Request, res: Response) {
   try {
     const screenings = await Screening.find()
       .select('movie.title movie.poster date slug')
-
     res.status(200).send(screenings);
   } catch (err: any) {
     res.status(500).send({ message: err });
