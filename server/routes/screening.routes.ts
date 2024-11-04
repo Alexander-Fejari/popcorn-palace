@@ -31,4 +31,14 @@ router.get("/:id",
   controller.getOneScreening
 );
 
+// Route associée pour remplir la base de données une seule fois
+router.post('/populate-once', async (req, res) => {
+  try {
+      await controller.populateDB();
+      res.status(200).json({ message: 'Base de données mise à jour avec succès.' });
+  } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la mise à jour de la base de données.', error });
+  }
+});
+
 export default router;

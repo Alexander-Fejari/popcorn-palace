@@ -116,19 +116,19 @@ async function addScreening(req: Request, res: Response) {
 
 async function getAllScreenings(req: Request, res: Response) {
     try {
-        const addAllScreenings = await getMovies();
+        // const addAllScreenings = await getMovies();
 
-        if (
-            addAllScreenings.results &&
-            Array.isArray(addAllScreenings.results)
-        ) {
-            const screeningPromises = addAllScreenings.results.map((movie) =>
-                addAPIScreening(req, movie.id)
-            );
+        // if (
+        //     addAllScreenings.results &&
+        //     Array.isArray(addAllScreenings.results)
+        // ) {
+        //     const screeningPromises = addAllScreenings.results.map((movie) =>
+        //         addAPIScreening(req, movie.id)
+        //     );
 
-            // Attendre que toutes les promesses se terminent, sans rejeter les erreurs
-            await Promise.allSettled(screeningPromises);
-        }
+        //     // Attendre que toutes les promesses se terminent, sans rejeter les erreurs
+        //     await Promise.allSettled(screeningPromises);
+        // }
 
         const screenings = await Screening.find().select(
             'movie.title movie.poster date slug'
@@ -190,4 +190,64 @@ async function getDates(req: Request, res: Response) {
   }
 }
 
-export default { addScreening, getAllScreenings, getOneScreening, getGenres, getDates }
+async function populateDB(): Promise<void> {
+  try {
+      // Récupérer les films depuis l'API TMDB
+      const movies = await getMovies();
+      movies.results = movies.results.slice(0, 8);
+
+      if (movies.results && Array.isArray(movies.results)) {
+          for (const movie of movies.results) {
+              const movieId = movie.id;
+              try {
+                  // Vérifier si le film existe déjà dans la base de données
+                  const existingScreening = await Screening.findOne({ 'movie.id': movieId });
+                  if (existingScreening) {
+                      console.log(`Le film avec l'ID ${movieId} existe déjà dans la base de données.`);
+                      continue;
+                  }
+
+                  // Récupérer les informations du film, le casting et les vidéos
+                  const movieInfo = await getMovieInfo(movieId);
+                  const casting = await getCasting(movieId);
+                  const videos = await getVideos(movieId);
+
+                  // Créer un nouvel objet film basé sur le modèle
+                  const newScreening = new Screening({
+                      movie: {
+                          title: movieInfo.title,
+                          director: casting.crew
+                              .filter((member: any) => member.job === 'Director')
+                              .map((director: any) => director.name),
+                          casting: casting.cast.slice(0, 5).map((member: any) => member.name),
+                          genres: movieInfo.genres.map((genre: any) => genre.name),
+                          synopsis: movieInfo.overview,
+                          poster: `https://image.tmdb.org/t/p/w300${movieInfo.poster_path}`,
+                          backdrop: `https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`,
+                          trailer: videos.results
+                              .filter((video: any) => video.type === 'Trailer' && video.site === 'YouTube')
+                              .map((video: any) => `https://www.youtube.com/watch?v=${video.key}`)
+                              .slice(0, 1)[0] || '',
+                          score: movieInfo.vote_average,
+                          length: movieInfo.runtime,
+                          release: isNaN(new Date(movieInfo.release_date).getTime()) ? null : new Date(movieInfo.release_date),
+                      },
+                      date: new Date(),
+                      slug: movieInfo.title.replace(/\s+/g, '-').toLowerCase(),
+                      bookedSeats: [],
+                  });
+
+                  // Enregistrer le film dans la base de données
+                  await newScreening.save();
+                  console.log(`Film "${movieInfo.title}" ajouté à la base de données.`);
+              } catch (error) {
+                  console.error(`Erreur lors de l'ajout du film avec l'ID ${movieId}:`, error);
+              }
+          }
+      }
+  } catch (error) {
+      console.error('Erreur lors de la récupération des films depuis TMDB:', error);
+  }
+}
+
+export default { addScreening, getAllScreenings, getOneScreening, getGenres, getDates, populateDB }

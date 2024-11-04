@@ -68,7 +68,7 @@ app.use(morgan('combined'));
 database.mongoose
   .connect(DATABASE_URL!, {} as ConnectOptions)
   .then(() => {
-      console.log("Successfully connect to MongoDB.");
+      console.log("Successfully connect to DB.");
   })
   .catch((err: Error) => {
       console.error("Connection error", err);
