@@ -32,13 +32,14 @@ export interface IAuthContext {
 
 /* Screening types */
 export interface IScreeningItem {
-  movie: {
-    title: string;
-    poster: string;
-  },
-  _id: string;
-  slug: string;
-  date: Date;
+    movie: {
+        title: string;
+        poster: string;
+    };
+    _id: string;
+    slug: string;
+    date: string | Date;
+    time: string;
 }
 
 export interface IScreening{

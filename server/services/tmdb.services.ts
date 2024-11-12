@@ -7,7 +7,8 @@ const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 // Get movie from TMDB API
 async function getMovies(): Promise<IMovieChange> {
-    const url = 'https://api.themoviedb.org/3/movie/changes?page=1';
+    const url =
+        'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=true&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3';
     const options = {
         method: 'GET',
         headers: {

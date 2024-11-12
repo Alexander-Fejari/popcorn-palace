@@ -10,55 +10,6 @@ import database from '../models';
 const Screening = database.screening;
 const Booking = database.booking;
 
-async function addAPIScreening(req: Request, movieId: string): Promise<void> {
-    try {
-        const [movieInfo, casting, videos] = await Promise.all([
-            getMovieInfo(movieId),
-            getCasting(movieId),
-            getVideos(movieId),
-        ]);
-
-        const screening = new Screening({
-            movie: {
-                title: movieInfo.title,
-                director: casting.crew
-                    .filter((member: any) => member.job === 'Director')
-                    .map((director: any) => director.name),
-                casting: casting.cast
-                    .slice(0, 5)
-                    .map((member: any) => member.name),
-                genres: movieInfo.genres.map((genre: any) => genre.name),
-                synopsis: movieInfo.overview,
-                poster: `https://image.tmdb.org/t/p/w300${movieInfo.poster_path}`,
-                backdrop: `https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`,
-                trailer: videos.results
-                    .filter(
-                        (video: any) =>
-                            video.type === 'Trailer' && video.site === 'YouTube'
-                    )
-                    .map((video: any) => video.key)
-                    .slice(0, 1)
-                    .join(''),
-                score: movieInfo.vote_average,
-                length: movieInfo.runtime,
-                release: movieInfo.release_date,
-            },
-            date: req.body.date,
-            slug: slugify(movieInfo.title, {
-                replacement: '-',
-                lower: true,
-                strict: true,
-                locale: 'fr',
-            }),
-        });
-
-        await screening.save();
-        console.log('Screening ajouté pour le film:', movieInfo.title);
-    } catch (err) {
-        console.error('Erreur lors de l’ajout du screening:', err);
-    }
-}
-
 // Create a new screening
 async function addScreening(req: Request, res: Response) {
     try {
@@ -116,20 +67,6 @@ async function addScreening(req: Request, res: Response) {
 
 async function getAllScreenings(req: Request, res: Response) {
     try {
-        // const addAllScreenings = await getMovies();
-
-        // if (
-        //     addAllScreenings.results &&
-        //     Array.isArray(addAllScreenings.results)
-        // ) {
-        //     const screeningPromises = addAllScreenings.results.map((movie) =>
-        //         addAPIScreening(req, movie.id)
-        //     );
-
-        //     // Attendre que toutes les promesses se terminent, sans rejeter les erreurs
-        //     await Promise.allSettled(screeningPromises);
-        // }
-
         const screenings = await Screening.find().select(
             'movie.title movie.poster date slug'
         );

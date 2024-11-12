@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 
 interface PillProps {
-  type: "dark" | "light";
-  size?: "small"
-  children: ReactNode;
-  className?: string;
+    type: 'dark' | 'light';
+    size?: 'small';
+    children: ReactNode;
+    className?: string;
 }
 
 const Pill = ({ type, size, children, className='' }: PillProps) => {  
