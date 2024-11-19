@@ -29,7 +29,7 @@ app.use(helmet());
 // Allow requests from multiple origins
 app.use(
     cors({
-        origin: ['http://localhost:3000'],
+        origin: ['http://localhost:3000', 'https://popcorn-palace.alexander-fejari.be'],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Origin', 'Content-Type', 'Accept', 'Authorization'],

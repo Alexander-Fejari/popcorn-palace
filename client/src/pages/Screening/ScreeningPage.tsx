@@ -69,7 +69,7 @@ const Screening = () => {
 
     const goToPaymentPage = async () => {
         const bookingId = await createBooking(bookingData);
-        navigate(`/payment?bookingid=${bookingId}`);
+        navigate(`/payment?bookingid=${bookingId}&time=${time}`);
     };
 
     if (loading || !screeningData) return <Loading />;

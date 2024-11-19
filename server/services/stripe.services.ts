@@ -1,6 +1,6 @@
 import stripePackage from 'stripe';
 import dotenv from 'dotenv';
-import { ITicket } from '../models/booking.model';
+import {ITicket} from '../models/booking.model';
 
 // ENV variables
 dotenv.config();
@@ -10,15 +10,15 @@ const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 const stripeItemIds = [
   {
     rate: 'Normal',
-    priceId: 'price_1OUfuaHz0pjBbTBVkq996PjC' 
+    priceId: 'prod_REz5uLaJo41UKD'
   },
   {
     rate: 'Étudiant',
-    priceId: 'price_1OUfupHz0pjBbTBV6MmV9CUF' 
+    priceId: 'prod_REz4HHHGXl1Lyz'
   },
   {
     rate: 'Réduit',
-    priceId: 'price_1OUfv6Hz0pjBbTBVQ2snRsEr' 
+    priceId: 'prod_REz5uLaJo41UKD'
   }
 ]
 
@@ -37,15 +37,14 @@ async function createCheckoutSession(items: ITicket[], bookingId: string, succes
       quantity: item.amount
     })
   })
-  
-  const session = await stripe.checkout.sessions.create({
-    line_items: stripeItems,
-    mode: 'payment',
-    success_url: `${successUrl}?success=true&bookingid=${bookingId}`,
-    cancel_url: `${cancelUrl}`,
-  });
 
-  return session
+  return await stripe.checkout.sessions.create({
+      line_items: stripeItems,
+      mode: 'payment',
+      success_url: `${successUrl}?success=true&bookingid=${bookingId}`,
+      cancel_url: `${cancelUrl}`,
+  })
+
 }
 
 // Retrieve checkout session details and check status
@@ -57,5 +56,7 @@ async function checkPaymentStatus(sessionId: string | undefined) {
   const retrievedSession = await stripe.checkout.sessions.retrieve(sessionId);
   return retrievedSession.payment_status === 'paid';
 }
+
+
 
 export { createCheckoutSession, checkPaymentStatus }

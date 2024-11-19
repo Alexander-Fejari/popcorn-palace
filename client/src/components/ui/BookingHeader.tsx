@@ -99,14 +99,6 @@ const BookingHeader = ({
     trailer,
 }: BookingHeaderProps) => {
     const [isTrailerOpen, setIsTrailerOpen] = useState(false);
-    console.log('BookingHeader props:', {
-        title,
-        date,
-        time,
-        backdrop,
-        score,
-        trailer,
-    });
     return (
         <>
             {trailer ? (

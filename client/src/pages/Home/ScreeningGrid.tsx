@@ -11,7 +11,7 @@ interface ScreeningCardProps {
     path: string;
     title: string;
     poster: string;
-    date: string; // Modifié pour être de type `string`
+    date: string;
     time: string;
     className?: string;
 }
