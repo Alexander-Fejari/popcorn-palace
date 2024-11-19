@@ -1,5 +1,5 @@
 function validateInput(value: string | null): boolean {
-  return (value) ? true : false;
+  return !!(value);
 }
 
 function validateEmail(email: string): boolean {
@@ -8,7 +8,7 @@ function validateEmail(email: string): boolean {
 }
 
 function validatePassword(password: string): boolean {
-  return (password.length > 10);
+  return (password.length > 9);
 }
 
 export { validateInput, validateEmail, validatePassword }

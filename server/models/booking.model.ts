@@ -9,15 +9,16 @@ interface ITicket {
 }
 
 interface IBooking extends Document {
-  screening_id: Types.ObjectId | IScreening,
-  user_id: Types.ObjectId | IUser,
-  seats: string[],
-  qr_code: string,
-  tickets: ITicket[],
-  price: number,
-  payment_status: boolean,
-  stripe_session_id: string
-  created_dt: Date
+    _id: Types.ObjectId;
+    screening_id: Types.ObjectId | IScreening;
+    user_id: Types.ObjectId | IUser;
+    seats: string[];
+    qr_code: string;
+    tickets: ITicket[];
+    price: number;
+    payment_status: boolean;
+    stripe_session_id: string;
+    created_dt: Date;
 }
 
 const TicketSchema = new Schema({

@@ -83,4 +83,6 @@ async function validateBooking(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+
+
 export default { createBooking, checkout, validateBooking, getBooking }

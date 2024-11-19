@@ -20,17 +20,21 @@ const PORT = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
-// Initialise express
+// Initialize express
 const app: Express = express();
 
 // Enhance API security
 app.use(helmet());
 
 // Allow requests from multiple origins
-app.use(cors({
-  origin: ["http://localhost:3000", "https://popa.lou-va.com"],
-  credentials: true
-}));
+app.use(
+    cors({
+        origin: ['http://localhost:3000', 'https://popcorn-palace.alexander-fejari.be'],
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Origin', 'Content-Type', 'Accept', 'Authorization'],
+    })
+);
 
 // Parse incoming requests
 app.use(express.json());
@@ -62,12 +66,9 @@ app.use(morgan('combined'));
 
 // Connection to the database
 database.mongoose
-  .connect(DATABASE_URL!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  } as ConnectOptions)
+  .connect(DATABASE_URL!, {} as ConnectOptions)
   .then(() => {
-      console.log("Successfully connect to MongoDB.");
+      console.log("Successfully connect to DB.");
   })
   .catch((err: Error) => {
       console.error("Connection error", err);

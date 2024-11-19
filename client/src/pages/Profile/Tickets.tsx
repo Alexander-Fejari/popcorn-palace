@@ -5,68 +5,83 @@ import Card from "@/components/common/Card";
 import Typography from "@/components/common/Typography";
 import Icon from "@/components/common/Icon";
 import Pill from "@/components/common/Pill";
-import { formatDateToDDMM, formatTimeToHHMM } from "@/utils/date.helpers";
+import { formatSeances } from '@/utils/date.helpers';
 
 interface IUserTicket {
-  seats: string[];
-  tickets: ITicket[]
-  screening_id: IScreening;
-  price: number;
-  payment_status: boolean;
-  qr_code: string;
+    seats: string[];
+    tickets: ITicket[];
+    screening_id: IScreening;
+    price: number;
+    payment_status: boolean;
+    qr_code: string;
 }
 
 const TicketHoles = () => {
-  return (
-    <div className="flex justify-between my-3">
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-      <div className="w-3 h-3 bg-black border border-white/10 rounded-full"></div>
-    </div>
-  )
-}
+    return (
+        <div className='flex justify-between my-3'>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+            <div className='w-3 h-3 bg-black border border-white/10 rounded-full'></div>
+        </div>
+    );
+};
 
 const Ticket = ({ ticket }: { ticket: IUserTicket }) => {
-  return (
-    <Card size='medium'>
-      <img 
-        src={ticket.screening_id.movie.backdrop} 
-        alt={`Image du film ${ticket.screening_id.movie.title}`} 
-        className="rounded"
-      />
-      <div className="relative -mt-9 ml-2 flex gap-2 items-center">
-        <Pill type="dark">{formatDateToDDMM(new Date(ticket.screening_id.date))}</Pill>
-        <Pill type="light" className=" backdrop-blur">{formatTimeToHHMM(new Date(ticket.screening_id.date))}</Pill>
-      </div>
-      <Typography as='h2' variant='h3' className="mt-6">{ticket.screening_id.movie.title}</Typography>
-      <TicketHoles />
-      <Typography as='p' variant='p' className="text-white-muted">Nombre de places: <span className="text-white">{ticket.seats.length}</span></Typography>
-      <Typography as='p' variant='p' className="text-white-muted">Sièges: <span className="text-white">{ticket.seats.join(', ')}</span></Typography>
-      <img 
-        src={ticket.qr_code} 
-        alt={`QR Code`} 
-        className="rounded w-1/2 mt-4"
-      />
-    </Card>
-  )
-}
+    // formatSeances pour obtenir les horaires des séances
+    const seances = formatSeances(new Date(ticket.screening_id.date), 1);
+    const formattedDate = seances[0].date;
+    const formattedTime = seances[0].time[0]; // Prend le premier horaire
+
+    return (
+        <Card size='medium'>
+            <img
+                src={ticket.screening_id.movie.backdrop}
+                alt={`Image du film ${ticket.screening_id.movie.title}`}
+                className='rounded'
+            />
+            <div className='relative -mt-9 ml-2 flex gap-2 items-center'>
+                <Pill type='dark'>{formattedDate}</Pill>
+                <Pill type='light' className=' backdrop-blur'>
+                    {formattedTime}
+                </Pill>
+            </div>
+            <Typography as='h2' variant='h3' className='mt-6'>
+                {ticket.screening_id.movie.title}
+            </Typography>
+            <TicketHoles />
+            <Typography as='p' variant='p' className='text-white-muted'>
+                Nombre de places:{' '}
+                <span className='text-white'>{ticket.seats.length}</span>
+            </Typography>
+            <Typography as='p' variant='p' className='text-white-muted'>
+                Sièges:{' '}
+                <span className='text-white'>{ticket.seats.join(', ')}</span>
+            </Typography>
+            <img
+                src={ticket.qr_code}
+                alt={`QR Code`}
+                className='rounded w-1/2 mt-4'
+            />
+        </Card>
+    );
+};
 
 const TicketList = () => {
   const [tickets, setTickets] = useState<IUserTicket[] | null>(null);
