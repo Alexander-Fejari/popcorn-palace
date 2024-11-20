@@ -20,11 +20,11 @@ export const login = async (data: ILoginData) => {
     
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signin`, options)
 
-    if (!response.ok) throw new Error('An error occured during signup');
+    if (!response.ok) throw new Error('An error occurred during signup');
 
     const user: IUserData = await response.json();
     return user;
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during signup');
+    throw new Error(error.message || 'An error occurred during signup');
   }
 };
