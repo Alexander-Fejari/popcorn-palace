@@ -139,7 +139,6 @@ const Screening = () => {
                         />
                     </div>
                 </div>
-
                 <Footer/>
             </Container>
         </>
