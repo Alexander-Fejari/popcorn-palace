@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { IScreening, IBooking, ITicket } from '@/types/types';
-import { fetchScreening } from '@/services/screening/fetchScreening.service';
-import { createBooking } from '@/services/booking/createBooking';
+import {useEffect, useState} from 'react';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {IBooking, IScreening, ITicket} from '@/types/types';
+import {fetchScreening} from '@/services/screening/fetchScreening.service';
+import {createBooking} from '@/services/booking/createBooking';
 import Container from '@/components/layout/Container';
 import Nav from '@/components/layout/Nav';
 import AuthModal from '@/components/auth/AuthModal';
@@ -14,10 +14,10 @@ import AboutMovie from './AboutMovie';
 import TicketSelection from './TicketSelection';
 import SeatSelection from './SeatSelection';
 import Loading from '@/components/layout/Loading';
-import { formatSeances } from "@/utils/date.helpers.ts";
+import {formatSeances} from "@/utils/date.helpers.ts";
 
 const Screening = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -39,7 +39,7 @@ const Screening = () => {
 
                 // Formater la date pour la cohérence avec ScreeningCard
                 const seances = formatSeances(new Date(), 1); // Obtenir une date formatée
-                const { date } = seances[0];
+                const {date} = seances[0];
 
                 setScreeningData({
                     ...screeningData,
@@ -56,8 +56,8 @@ const Screening = () => {
 
         fetchData();
     }, [id]);
+
     const dateObject = new Date(formattedDate);
-    console.log(dateObject);
 
     const setTickets = (tickets: ITicket[]) => {
         if (tickets.length < bookingData.seats.length) {
@@ -87,13 +87,13 @@ const Screening = () => {
         navigate(`/payment?bookingid=${bookingId}&time=${time}`);
     };
 
-    if (loading || !screeningData) return <Loading />;
+    if (loading || !screeningData) return <Loading/>;
 
     return (
         <>
-            <AuthModal />
+            <AuthModal/>
             <Container>
-                <Nav />
+                <Nav/>
                 <BookingHeader
                     title={screeningData.movie.title}
                     date={dateObject}
@@ -124,7 +124,7 @@ const Screening = () => {
                     </div>
 
                     <div className='col-span-3 order-1 lg:col-span-1 lg:order-2'>
-                        <BookingSteps step={1} />
+                        <BookingSteps step={1}/>
                     </div>
 
                     <div className='col-span-3 order -3 lg:col-span-1 lg:order-3 lg:sticky lg:top-4'>
@@ -140,7 +140,7 @@ const Screening = () => {
                     </div>
                 </div>
 
-                <Footer />
+                <Footer/>
             </Container>
         </>
     );
