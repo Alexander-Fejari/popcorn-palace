@@ -4,7 +4,7 @@ import Typography from "@/components/common/Typography"
 import Pill from "@/components/common/Pill"
 import Icon from "@/components/common/Icon"
 import Button from "@/components/common/Button"
-import { formatDateToDDMMWithDash } from '@/utils/date.helpers';
+import {useLocation} from "react-router-dom";
 
 interface BookingHeaderProps {
     title: string;
@@ -91,14 +91,18 @@ const Rating = ({ score }: RatingProps) => {
 };
 
 const BookingHeader = ({
-    title,
-    date,
-    time,
-    backdrop,
-    score,
-    trailer,
-}: BookingHeaderProps) => {
+                           title,
+                           backdrop,
+                           score,
+                           trailer,
+                       }: BookingHeaderProps) => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const date = queryParams.get('date'); // Date déjà formatée
+    const time = queryParams.get('time'); // Heure déjà formatée
+
     const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+
     return (
         <>
             {trailer ? (
@@ -107,9 +111,7 @@ const BookingHeader = ({
                     isOpen={isTrailerOpen}
                     setIsOpen={setIsTrailerOpen}
                 />
-            ) : (
-                <></>
-            )}
+            ) : null}
             <section className='w-full flex flex-col gap-4 justify-end h-[30rem] sm:px-2 md:h-[30rem] md:flex-row md:justify-between md:items-end'>
                 <div className='absolute top-0 left-0 -z-10 w-full flex justify-center items-center h-[40rem] md:h-[40rem]'>
                     <img
@@ -121,15 +123,13 @@ const BookingHeader = ({
                 </div>
 
                 <div>
-                    {score ? <Rating score={score} /> : <></>}
+                    {score ? <Rating score={score} /> : null}
 
                     <Typography as='h1' variant='h1' className='mt-2 mb-4'>
                         {title}
                     </Typography>
                     <div className='flex gap-2'>
-                        <Pill type='dark'>
-                            {formatDateToDDMMWithDash(date)}
-                        </Pill>
+                        <Pill type='dark'>{date}</Pill>
                         <Pill type='light' className='backdrop-blur-sm'>
                             {time}
                         </Pill>
@@ -148,9 +148,7 @@ const BookingHeader = ({
                             Voir le trailer
                         </Button>
                     </div>
-                ) : (
-                    <></>
-                )}
+                ) : null}
             </section>
         </>
     );

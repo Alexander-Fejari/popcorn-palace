@@ -29,7 +29,7 @@ app.use(helmet());
 // Allow requests from multiple origins
 app.use(
     cors({
-        origin: ['http://localhost:3000', 'https://popcorn-palace.alexander-fejari.be'],
+        origin: ['http://localhost:3001', 'https://popcorn-palace.alexander-fejari.be'],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Origin', 'Content-Type', 'Accept', 'Authorization'],
@@ -42,14 +42,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Stores session data on the client within a cookie
 app.use(
-  cookieSession({
-    name: "session",
-    keys: [COOKIE_SECRET!],
-    httpOnly: true,
-    sameSite: (process.env.ENV === 'production') ? "none" : "strict",
-    secure: process.env.ENV === 'production',
-    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-  })
+    cookieSession({
+        name: "session",
+        keys: [COOKIE_SECRET!],
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? "none" : "strict",
+        secure: process.env.NODE_ENV === 'production', // En production, cookies sécurisés
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 jours
+    })
 );
 
 // Set response headers

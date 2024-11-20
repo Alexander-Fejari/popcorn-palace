@@ -26,7 +26,7 @@ const ScreeningCard = ({
 }: ScreeningCardProps) => {
     return (
         <a
-            href={`/screenings/${path}?time=${time}`}
+            href={`/screenings/${path}?time=${time}&date=${date}`}
             className={`${className} rounded-lg`}>
             <Card
                 size='medium'
