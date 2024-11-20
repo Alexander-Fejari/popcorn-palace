@@ -14,6 +14,7 @@ import AboutMovie from './AboutMovie';
 import TicketSelection from './TicketSelection';
 import SeatSelection from './SeatSelection';
 import Loading from '@/components/layout/Loading';
+import { formatSeances } from "@/utils/date.helpers.ts";
 
 const Screening = () => {
     const { id } = useParams();
@@ -29,20 +30,34 @@ const Screening = () => {
         tickets: [],
         seats: [],
     });
+    const [formattedDate, setFormattedDate] = useState<string>(''); // État pour la date formatée
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const screeningData = await fetchScreening(id!);
-                setScreeningData(screeningData);
+
+                // Formater la date pour la cohérence avec ScreeningCard
+                const seances = formatSeances(new Date(), 1); // Obtenir une date formatée
+                const { date } = seances[0];
+
+                setScreeningData({
+                    ...screeningData,
+                    formattedDate: date,
+                });
+                setFormattedDate(date); // Stocker la date formatée
+
                 setLoading(false);
             } catch (error: any) {
+                console.error("Erreur lors de la récupération des données de projection :", error);
                 setLoading(false);
             }
         };
 
         fetchData();
     }, [id]);
+    const dateObject = new Date(formattedDate);
+    console.log(dateObject);
 
     const setTickets = (tickets: ITicket[]) => {
         if (tickets.length < bookingData.seats.length) {
@@ -81,7 +96,7 @@ const Screening = () => {
                 <Nav />
                 <BookingHeader
                     title={screeningData.movie.title}
-                    date={screeningData.date}
+                    date={dateObject}
                     time={time}
                     backdrop={screeningData.movie.backdrop}
                     score={parseFloat(screeningData.movie.score)}
@@ -112,14 +127,13 @@ const Screening = () => {
                         <BookingSteps step={1} />
                     </div>
 
-                    <div className='col-span-3 order-3 lg:col-span-1 lg:order-3 lg:sticky lg:top-4'>
+                    <div className='col-span-3 order -3 lg:col-span-1 lg:order-3 lg:sticky lg:top-4'>
                         <BookingSummary
                             booking={bookingData}
                             buttonLabel='Suivant'
                             disabled={
-                                bookingData?.tickets.length == 0 ||
-                                bookingData.tickets.length !=
-                                    bookingData.seats.length
+                                bookingData?.tickets.length === 0 ||
+                                bookingData.tickets.length !== bookingData.seats.length
                             }
                             buttonAction={goToPaymentPage}
                         />
