@@ -34,7 +34,7 @@ async function sendConfirmationEmail(booking: IBooking) {
     }
 
     const data = await resend.emails.send({
-      from: "Popcorn Palace <no-reply@popcorn-palace.lou-va.com>",
+      from: "Popcorn Palace <no-reply@popcorn-palace.alexander-fejari.be>",
       to: [user.email],
       subject: `Votre ticket pour ${screening.movie.title}`,
       html: confirmationEmail(emailData),
