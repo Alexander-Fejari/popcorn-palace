@@ -46,8 +46,9 @@ app.use(
         name: "session",
         keys: [COOKIE_SECRET!],
         httpOnly: true,
-        sameSite: process.env.NODE_ENV === 'production' ? "none" : "strict",
-        secure: process.env.NODE_ENV === 'production', // En production, cookies sécurisés
+        domain: 'popcorn-palace.alexander-fejari.be',
+        sameSite: process.env.NODE_ENV === 'production' ? "strict" : "lax",
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 jours
     })
 );
