@@ -89,7 +89,7 @@ const LightsLayer = ({ className, children }: LightsLayerProps) => {
 
 const LightsBackground = () => {
   return (
-    <div className="absolute top-0 left-0 -z-50 w-screen h-screen">
+    <div className="absolute top-0 left-0 -z-50 w-full h-screen">
       <div className="relative w-full h-full">
         <LightsLayer className='-z-10'>
           <Light className="w-70 h-70" />

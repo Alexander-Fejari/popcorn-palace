@@ -25,6 +25,6 @@ export const startBookingCheckout = async (bookingId: string) => {
       window.location.href = `${import.meta.env.VITE_URL}/payment/confirmation?success=false`
     }
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during checkout');
+    throw new Error(error.message || 'An error occurred during checkout');
   }
 };

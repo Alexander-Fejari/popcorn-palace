@@ -13,6 +13,6 @@ export const checkBookingStatus = async (bookingId: string) => {
 
     return response;
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during checkout');
+    throw new Error(error.message || 'An error occurred during checkout');
   }
 };
