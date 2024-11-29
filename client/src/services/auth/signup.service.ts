@@ -23,6 +23,6 @@ export const signUp = async (data: ISignUpData) => {
 
     return response;
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during signup');
+    throw new Error(error.message || 'An error occurred during signup');
   }
 };

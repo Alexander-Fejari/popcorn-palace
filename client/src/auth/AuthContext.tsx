@@ -46,7 +46,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await signUp(data);
       return response;
     } catch (error: any) {
-      throw new Error("An error occured during signup");
+      throw new Error("An error occurred during signup");
     }
   }
 

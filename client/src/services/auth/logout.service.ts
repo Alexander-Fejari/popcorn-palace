@@ -11,10 +11,10 @@ export const logout = async () => {
     
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`, options)
 
-    if (!response.ok) throw new Error('An error occured during signout');
+    if (!response.ok) throw new Error('An error occurred during signout');
 
     return response;
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during signout');
+    throw new Error(error.message || 'An error occurred during signout');
   }
 };

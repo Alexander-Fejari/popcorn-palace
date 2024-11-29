@@ -33,6 +33,6 @@ export const getBookingData = async (bookingId: string) => {
     const body = await response.json()
     return {...body.booking, tickets: transformTicketAPIToTicket(body.booking.tickets)}
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during checkout');
+    throw new Error(error.message || 'An error occurred during checkout');
   }
 };

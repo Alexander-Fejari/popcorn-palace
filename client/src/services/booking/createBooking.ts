@@ -47,10 +47,10 @@ export const createBooking = async (data: IBooking) => {
     if(response.ok) {
       return body.booking_id
     } else {
-      throw new Error('An error occured during booking creation');
+      throw new Error('An error occurred during booking creation');
     } 
 
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during booking creation');
+    throw new Error(error.message || 'An error occurred during booking creation');
   }
 };

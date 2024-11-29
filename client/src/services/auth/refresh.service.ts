@@ -11,6 +11,6 @@ export const refresh = async () => {
     const user: IUserData = await response.json();
     return user;
   } catch (error: any) {
-    throw new Error(error.message || 'An error occured during auth refresh');
+    throw new Error(error.message || 'An error occurred during auth refresh');
   }
 };
