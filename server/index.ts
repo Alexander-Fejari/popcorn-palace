@@ -16,9 +16,20 @@ import userRoutes from './routes/user.routes'
 
 // ENV variables
 dotenv.config();
-const PORT = process.env.PORT;
-const DATABASE_URL = process.env.DATABASE_URL;
-const COOKIE_SECRET = process.env.COOKIE_SECRET;
+const PORT = process.env.PORT || 8000;
+const DATABASE_URL = process.env.DATABASE_URL || 'vide';
+const COOKIE_SECRET = process.env.COOKIE_SECRET || 'vide';
+
+
+if (!DATABASE_URL) {
+    console.error('DATABASE_URL is not defined in the .env file');
+    process.exit(1);
+}
+
+if (!COOKIE_SECRET) {
+    console.error('JWT_SECRET is not defined in the .env file');
+    process.exit(1);
+}
 
 // Initialize express
 const app: Express = express();
@@ -46,9 +57,6 @@ app.use(
         name: "session",
         keys: [COOKIE_SECRET!],
         httpOnly: true,
-        domain: 'popcorn-palace.alexander-fejari.be',
-        sameSite: process.env.NODE_ENV === 'production' ? "strict" : "lax",
-        secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 jours
     })
 );
@@ -77,10 +85,10 @@ database.mongoose
   });
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/screenings', screeningRoutes);
-app.use('/bookings', bookingRoutes);
-app.use('/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/screenings', screeningRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/users', userRoutes);
 
 // Set port, listen for requests
 app.listen(PORT, () => {
